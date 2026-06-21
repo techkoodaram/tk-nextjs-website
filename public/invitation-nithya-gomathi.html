@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>techKoodaram – Invitation Letter for Murugalakshmi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap"
+    rel="stylesheet" />
+
+  <style>
+    :root {
+      --brand-dark: #252220;
+      --brand-gold: #9a6f2e;
+      --brand-gold-lt: #c49040;
+      --cream: #f9f6f2;
+      --line-color: #e5ddd4;
+      --muted: #9b8e82;
+      --body-text: #2e2a26;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      background: #e8e1d9;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 32px 16px;
+      gap: 28px;
+    }
+
+    .preview-label {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: -12px;
+    }
+
+    /* ── A4 Page ── */
+    .page {
+      width: 794px;
+      min-height: 1123px;
+      background: var(--cream);
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.18);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      overflow: hidden;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* Left accent bar */
+    .page::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 6px;
+      background: linear-gradient(180deg, var(--brand-gold) 0%, var(--brand-dark) 100%);
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* ── Header ── */
+    .page-header {
+      padding: 30px 48px 20px 54px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .logo-img {
+      height: 28px;
+      width: auto;
+      display: block;
+    }
+
+    .tagline {
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--brand-gold);
+      font-weight: 500;
+    }
+
+    .header-right {
+      text-align: right;
+      font-size: 9px;
+      line-height: 1.8;
+      color: var(--muted);
+    }
+
+    .header-right a {
+      color: var(--brand-gold);
+      text-decoration: none;
+    }
+
+    .header-accent {
+      height: 2px;
+      background: linear-gradient(90deg, var(--brand-gold) 0%, var(--brand-gold-lt) 50%, transparent 100%);
+      margin: 0 48px 0 54px;
+      border-radius: 2px;
+    }
+
+    /* ── Invitation Hero Banner ── */
+    .invite-banner {
+      margin: 36px 54px 0 58px;
+      background: var(--brand-dark);
+      border-radius: 8px;
+      padding: 28px 36px;
+      position: relative;
+      overflow: hidden;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .invite-banner::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--brand-gold), var(--brand-gold-lt));
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .invite-banner::after {
+      content: '</>';
+      position: absolute;
+      right: 28px;
+      bottom: -10px;
+      font-size: 80px;
+      font-weight: 900;
+      color: rgba(255, 255, 255, 0.04);
+      letter-spacing: -4px;
+      font-family: monospace;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .banner-label {
+      font-size: 9.5px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--brand-gold);
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .banner-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.3;
+      margin-bottom: 6px;
+      letter-spacing: -0.02em;
+    }
+
+    .banner-subtitle {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.55);
+      font-weight: 300;
+    }
+
+    /* ── Body ── */
+    .letter-body {
+      flex: 1;
+      padding: 28px 52px 16px 58px;
+      font-size: 11.5px;
+      line-height: 1.8;
+      color: var(--body-text);
+    }
+
+    .letter-date {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    p {
+      margin: 0 0 10px;
+      font-size: 11.5px;
+      line-height: 1.8;
+    }
+
+    /* Highlighted name block */
+    .name-highlight {
+      display: inline-block;
+      background: rgba(154, 111, 46, 0.1);
+      border-left: 3px solid var(--brand-gold);
+      padding: 3px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--brand-dark);
+      border-radius: 0 4px 4px 0;
+      margin: 4px 0 12px;
+    }
+
+    /* Meeting details card */
+    .details-card {
+      border: 1px solid var(--line-color);
+      border-radius: 6px;
+      padding: 18px 20px;
+      margin: 18px 0;
+      background: rgba(154, 111, 46, 0.03);
+    }
+
+    .details-card-title {
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--brand-gold);
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .detail-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 8px;
+      align-items: flex-start;
+    }
+
+    .detail-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .detail-key {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      min-width: 80px;
+      padding-top: 1px;
+    }
+
+    .detail-val {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--brand-dark);
+    }
+
+    .detail-val small {
+      display: block;
+      font-size: 10px;
+      color: var(--muted);
+      font-weight: 400;
+      margin-top: 1px;
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--line-color);
+      margin: 16px 0;
+    }
+
+    /* Signature */
+    .sign-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-top: 24px;
+    }
+
+    .sign-left p {
+      margin: 0 0 4px;
+      font-size: 11.5px;
+    }
+
+    .sign-block {
+      margin-top: 8px;
+    }
+
+    .sign-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--brand-dark);
+    }
+
+    .sign-title {
+      font-size: 10px;
+      color: var(--brand-gold);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+
+    .sign-sub {
+      font-size: 9.5px;
+      color: var(--muted);
+      margin-top: 1px;
+    }
+
+    /* Seal / stamp look */
+    .seal {
+      text-align: center;
+      padding: 14px 20px;
+      border: 2px solid var(--line-color);
+      border-radius: 6px;
+      min-width: 140px;
+    }
+
+    .seal-label {
+      font-size: 8px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .seal-logo-text {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--brand-dark);
+      letter-spacing: -0.02em;
+    }
+
+    .seal-logo-text span {
+      color: var(--brand-gold);
+    }
+
+    .seal-sub {
+      font-size: 8.5px;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    /* Footer */
+    .page-footer {
+      border-top: 1.5px solid var(--line-color);
+      padding: 10px 48px 16px 54px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .footer-logo-text {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--brand-dark);
+      letter-spacing: -0.02em;
+    }
+
+    .footer-logo-text span {
+      color: var(--brand-gold);
+    }
+
+    .footer-divider {
+      width: 1px;
+      height: 16px;
+      background: var(--line-color);
+    }
+
+    .footer-tagline {
+      font-size: 8.5px;
+      color: var(--muted);
+    }
+
+    .footer-right {
+      text-align: right;
+      font-size: 8.5px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .footer-right a {
+      color: var(--brand-gold);
+      text-decoration: none;
+    }
+
+    /* Print */
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 0;
+      }
+
+      html,
+      body {
+        background: white;
+        padding: 0;
+        margin: 0;
+        display: block;
+      }
+
+      .preview-label,
+      .print-btn {
+        display: none !important;
+      }
+
+      .page {
+        width: 210mm;
+        min-height: 297mm;
+        box-shadow: none;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .page::before,
+      .invite-banner,
+      .invite-banner::before {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <p class="preview-label">Screen Preview – Invitation Letter | A4</p>
+
+  <div class="page">
+
+    <!-- Header -->
+    <header class="page-header">
+      <div class="header-left">
+        <img src="/logo.png" alt="techKoodaram" class="logo-img" />
+        <span class="tagline">Learn · Build · Grow</span>
+      </div>
+      <div class="header-right">
+        techkoodaram.in &nbsp;·&nbsp;
+        <a href="mailto:contact@techkoodaram.in">contact@techkoodaram.in</a>
+      </div>
+    </header>
+
+    <div class="header-accent"></div>
+
+    <!-- Invitation Banner -->
+    <div class="invite-banner">
+      <div class="banner-label">Community Organizer Invitation</div>
+      <div class="banner-title">Meeting with the<br />District Collector, Virudhunagar</div>
+      <div class="banner-subtitle">techKoodaram Community Delegation · 27 June 2026</div>
+    </div>
+
+    <!-- Body -->
+    <div class="letter-body">
+
+      <div class="letter-date">21 June 2026</div>
+
+      <p>To Whom It May Concern,</p>
+
+      <p>
+        This letter is to confirm that the following individual has been invited by techKoodaram to be part of our
+        community delegation for an official meeting with the <strong>District Collector, Virudhunagar</strong>:
+      </p>
+
+      <div class="name-highlight">Ms. Murugalakshmi</div>
+
+      <p>
+        Murugalakshmi is an Core team member within the techKoodaram community. She has contributed meaningfully
+        to planning and coordinating community sessions, and we are pleased to invite her as a representative of
+        our community for this engagement.
+      </p>
+
+      <div class="details-card">
+        <div class="details-card-title">Meeting Details</div>
+
+        <div class="detail-row">
+          <span class="detail-key">Date</span>
+          <span class="detail-val">27 June 2026 (Saturday)</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-key">Meeting With</span>
+          <span class="detail-val">
+            District Collector
+            <small>Office of the District Collector, Virudhunagar District, Tamil Nadu</small>
+          </span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-key">Purpose</span>
+          <span class="detail-val">
+            Introduction of techKoodaram
+            <small>Volunteer technology community engagement for Virudhunagar District</small>
+          </span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-key">Attending As</span>
+          <span class="detail-val">Community Organizer, techKoodaram</span>
+        </div>
+      </div>
+
+      <p>
+        We kindly request the concerned authorities to grant Ms. Murugalakshmi the necessary permission to
+        attend this meeting on 27 June 2026. Her participation is important to us as she has been a key
+        organizer in building the techKoodaram community in the region.
+      </p>
+
+      <p>
+        For any clarification or verification, please feel free to reach us at
+        <a href="mailto:contact@techkoodaram.in"
+          style="color:var(--brand-gold);text-decoration:none;">contact@techkoodaram.in</a>
+        or visit <a href="https://techkoodaram.in"
+          style="color:var(--brand-gold);text-decoration:none;">techkoodaram.in</a>.
+      </p>
+
+      <div class="divider"></div>
+
+      <div class="sign-section">
+        <div class="sign-left">
+          <p>Yours sincerely,</p>
+          <div class="sign-block">
+            <div class="sign-name">Selvakumar Duraipandian</div>
+            <div class="sign-title">Founder, techKoodaram</div>
+            <div class="sign-sub">contact@techkoodaram.in &nbsp;·&nbsp; techkoodaram.in</div>
+          </div>
+        </div>
+
+        <div class="seal">
+          <div class="seal-label">Authorized by</div>
+          <div class="seal-logo-text">&lt;tech<span>K</span>oodaram /&gt;</div>
+          <div class="seal-sub">Building Communities Through Technology</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="page-footer">
+      <div class="footer-brand">
+        <span class="footer-logo-text">&lt;tech<span>K</span>oodaram /&gt;</span>
+        <div class="footer-divider"></div>
+        <span class="footer-tagline">#1 South TN Tech Community</span>
+      </div>
+      <div class="footer-right">
+        <a href="https://techkoodaram.in">techkoodaram.in</a> &nbsp;·&nbsp;
+        <a href="mailto:contact@techkoodaram.in">contact@techkoodaram.in</a>
+      </div>
+    </footer>
+
+  </div><!-- /page -->
+
+  <!-- Print Button -->
+  <button class="print-btn" onclick="window.print()" style="
+    font-family: 'Roboto', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    background: #9a6f2e;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 32px;
+    cursor: pointer;
+    box-shadow: 0 4px 18px rgba(154,111,46,0.35);
+    transition: background 0.2s;
+  " onmouseover="this.style.background='#7a5820'" onmouseout="this.style.background='#9a6f2e'">
+    🖨️ &nbsp;Print / Save as PDF
+  </button>
+
+</body>
+
+</html>
