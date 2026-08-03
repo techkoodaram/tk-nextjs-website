@@ -60,7 +60,7 @@ const Hero = () => {
             <Button
               variant="hero"
               size="xl"
-              onClick={() => window.open("https://chat.whatsapp.com/JnWLnxuQAZm9pIZNUWk9Nk", "_blank")}
+              onClick={() => window.open("https://chat.whatsapp.com/IQqIBheAXR5D6JkdEBlYA0?mode=gi_t", "_blank")}
             >
               Join Our WhatsApp Community
               <ArrowRight size={20} />
