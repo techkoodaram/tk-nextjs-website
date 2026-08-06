@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { toPlainText } from '@portabletext/react';
 import { getPostBySlug } from '@/lib/blog';
 import { formatMarkdownPost, htmlToMarkdown } from '@/lib/markdown';
 
@@ -26,9 +27,11 @@ export async function GET(request: NextRequest) {
       const slug = normalizedPath.replace('/blog/', '');
       if (slug) {
         try {
-          const post = getPostBySlug(slug);
-          const markdown = formatMarkdownPost(post.title, post.content);
-          return new Response(markdown, { headers });
+          const post = await getPostBySlug(slug);
+          if (post) {
+            const markdown = formatMarkdownPost(post.title, toPlainText(post.body));
+            return new Response(markdown, { headers });
+          }
         } catch (e) {
           // If post not found, fallback to fetching page content
         }

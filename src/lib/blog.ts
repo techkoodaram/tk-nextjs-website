@@ -1,8 +1,6 @@
-import fs from 'fs';
-import path from 'path';
-import matter from 'gray-matter';
-
-const postsDirectory = path.join(process.cwd(), 'content/blog');
+import { client } from '@/sanity/lib/client';
+import { urlFor } from '@/sanity/lib/image';
+import type { PortableTextBlock } from 'next-sanity';
 
 export interface BlogPost {
   slug: string;
@@ -10,37 +8,36 @@ export interface BlogPost {
   date: string;
   description: string;
   author: string;
-  content: string;
+  authorUrl?: string;
+  coverImage: string;
+  body: PortableTextBlock[];
   [key: string]: any;
 }
 
-export function getPostSlugs() {
-  return fs.readdirSync(postsDirectory);
+const postFields = `
+  title,
+  "slug": slug.current,
+  date,
+  description,
+  author,
+  authorUrl,
+  "coverImage": coverImage.asset->url
+`;
+
+export async function getAllPosts(): Promise<BlogPost[]> {
+  return client.fetch(
+    `*[_type == "post"] | order(date desc) { ${postFields} }`,
+    {},
+    { next: { revalidate: 60 } }
+  );
 }
 
-export function getPostBySlug(slug: string): BlogPost {
-  const realSlug = slug.replace(/\.mdx$/, '');
-  const fullPath = path.join(postsDirectory, `${realSlug}.mdx`);
-  const fileContents = fs.readFileSync(fullPath, 'utf8');
-  const { data, content } = matter(fileContents);
-
-  return {
-    slug: realSlug,
-    title: data.title,
-    date: data.date instanceof Date ? data.date.toISOString() : data.date,
-    description: data.description,
-    author: data.author,
-    content,
-    ...data,
-  };
+export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
+  return client.fetch(
+    `*[_type == "post" && slug.current == $slug][0] { ${postFields}, body }`,
+    { slug },
+    { next: { revalidate: 60 } }
+  );
 }
 
-export function getAllPosts(): BlogPost[] {
-  const slugs = getPostSlugs();
-  const posts = slugs
-    .filter((slug) => slug.endsWith('.mdx'))
-    .map((slug) => getPostBySlug(slug))
-    // Sort by date descending: newest first (top), oldest last (bottom)
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-  return posts;
-}
+export { urlFor };

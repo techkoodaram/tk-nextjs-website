@@ -19,7 +19,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   let posts: any[] = [];
   try {
-    posts = getAllPosts();
+    posts = await getAllPosts();
   } catch (error) {
     console.error('Sitemap generation error:', error);
   }

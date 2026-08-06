@@ -1,11 +1,31 @@
-import fs from 'fs';
-import path from 'path';
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { getPostBySlug, getAllPosts } from '@/lib/blog';
-import { compileMDX } from 'next-mdx-remote/rsc';
+import { PortableText, type PortableTextComponents } from '@portabletext/react';
+import { getPostBySlug, getAllPosts, urlFor } from '@/lib/blog';
 import BlogShare from '@/components/BlogShare';
+
+const portableTextComponents: PortableTextComponents = {
+  types: {
+    image: ({ value }) => (
+      <span className="relative my-8 block w-full overflow-hidden rounded-lg shadow-lg">
+        <Image
+          src={urlFor(value).width(1200).url()}
+          alt={value.alt || ''}
+          width={1200}
+          height={0}
+          className="h-auto w-full"
+          sizes="(max-width: 768px) 100vw, 768px"
+        />
+      </span>
+    ),
+    codeBlock: ({ value }) => (
+      <pre className="overflow-x-auto rounded-lg bg-muted p-4 text-sm">
+        <code>{value.code}</code>
+      </pre>
+    ),
+  },
+};
 
 export const dynamicParams = true;
 
@@ -16,7 +36,7 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  const posts = getAllPosts();
+  const posts = await getAllPosts();
   return posts.map((post) => ({
     slug: post.slug,
   }));
@@ -24,7 +44,8 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps) {
   try {
-    const post = getPostBySlug(params.slug);
+    const post = await getPostBySlug(params.slug);
+    if (!post) throw new Error('Post not found');
     return {
       title: `${post.title} | techKoodaram`,
       description: post.description,
@@ -48,15 +69,10 @@ export async function generateMetadata({ params }: PageProps) {
 
 export default async function BlogPost({ params }: PageProps) {
   try {
-    const post = getPostBySlug(params.slug);
-
-    // Compile MDX content
-    const { content } = await compileMDX({
-      source: post.content,
-      options: {
-        parseFrontmatter: false,
-      },
-    });
+    const post = await getPostBySlug(params.slug);
+    if (!post) {
+      notFound();
+    }
 
     return (
       <article className="container mx-auto px-4 pt-32 md:px-5 md:pt-32 pb-24 w-full max-w-[720px]">
@@ -69,7 +85,7 @@ export default async function BlogPost({ params }: PageProps) {
               "@type": "BlogPosting",
               headline: post.title,
               description: post.description,
-              image: post.coverImage ? `https://techkoodaram.in${post.coverImage}` : "https://techkoodaram.in/og-image.png",
+              image: post.coverImage || "https://techkoodaram.in/og-image.png",
               datePublished: post.date,
               author: {
                 "@type": "Person",
@@ -146,7 +162,7 @@ export default async function BlogPost({ params }: PageProps) {
         ) : null}
 
         <div className="prose dark:prose-invert max-w-none prose-headings:font-bold prose-headings:text-primary prose-a:text-primary prose-img:rounded-lg">
-          {content}
+          <PortableText value={post.body} components={portableTextComponents} />
           <div className="my-10 border-t pt-8">
             <BlogShare title={post.title} slug={post.slug} />
           </div>
