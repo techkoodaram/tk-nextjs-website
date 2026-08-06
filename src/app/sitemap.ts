@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { getAllPosts } from '@/lib/blog';
+import { getAllEvents } from '@/lib/events';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = 'https://www.techkoodaram.in';
@@ -14,12 +15,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${siteUrl}/blog`,
       changeFrequency: 'weekly',
       priority: 0.8,
+    },
+    {
+      url: `${siteUrl}/events`,
+      changeFrequency: 'weekly',
+      priority: 0.8,
     }
   ];
 
   let posts: any[] = [];
   try {
     posts = await getAllPosts();
+  } catch (error) {
+    console.error('Sitemap generation error:', error);
+  }
+
+  let events: any[] = [];
+  try {
+    events = await getAllEvents();
   } catch (error) {
     console.error('Sitemap generation error:', error);
   }
@@ -31,5 +44,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  return [...staticRoutes, ...blogRoutes];
+  const eventRoutes: MetadataRoute.Sitemap = events.map((event) => ({
+    url: `${siteUrl}/events/${event.slug}`,
+    lastModified: new Date(event.eventDate),
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  }));
+
+  return [...staticRoutes, ...blogRoutes, ...eventRoutes];
 }

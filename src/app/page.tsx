@@ -1,5 +1,5 @@
 import Hero from "@/components/Hero";
-import Header from "@/components/Header";
+import SiteHeader from "@/components/SiteHeader";
 import Footer from "@/components/Footer";
 import JoinCTA from "@/components/JoinCTA";
 import CommunityPillars from "@/components/CommunityPillars";
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 const Index = () => {
     return (
         <div className="min-h-screen bg-background flex flex-col">
-            <Header />
+            <SiteHeader />
             <main className="flex-grow">
                 <Hero />
                 <CommunityPillars />
