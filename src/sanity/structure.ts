@@ -12,5 +12,9 @@ export const structure: StructureResolver = (S) =>
             .title('Events')
             .defaultOrdering([{field: 'eventDate', direction: 'desc'}])
         ),
-      ...S.documentTypeListItems().filter((item) => item.getId() !== 'event'),
+      S.documentTypeListItem('eventForm').title('Event Forms'),
+      S.documentTypeListItem('eventRegistration').title('Event Registrations'),
+      ...S.documentTypeListItems().filter(
+        (item) => !['event', 'eventForm', 'eventRegistration'].includes(item.getId() as string)
+      ),
     ])

@@ -6,6 +6,7 @@ import { Calendar, MapPin } from 'lucide-react';
 import { getEventBySlug, getAllEvents, urlFor } from '@/lib/events';
 import { Button } from '@/components/ui/button';
 import EventShare from '@/components/EventShare';
+import EventRegistrationForm from '@/components/EventRegistrationForm';
 
 const portableTextComponents: PortableTextComponents = {
   types: {
@@ -223,24 +224,35 @@ export default async function EventPage({ params }: PageProps) {
           <div className="mt-12 border-t pt-10" id="register">
             <h2 className="text-2xl font-bold mb-6">Registration</h2>
 
-            {event.formEmbedUrl ? (
-              <div className="w-full overflow-hidden rounded-lg border border-border/50">
-                <iframe
-                  src={event.formEmbedUrl}
-                  title={`${event.title} registration form`}
-                  className="w-full min-h-[600px] block"
-                  loading="lazy"
+            {event.useNativeForm ? (
+              <div className="mt-6 max-w-2xl mx-auto">
+                <EventRegistrationForm
+                  eventId={event._id}
+                  fields={[...(event.formTemplate?.fields || []), ...(event.customFields || [])]}
+                  title={event.formTemplate?.title}
+                  description={event.formTemplate?.description}
+                  eventName={event.title}
+                  eventDate={eventDateLabel}
+                  eventVenue={event.venue}
                 />
               </div>
+            ) : event.externalFormUrl ? (
+              <div className="mt-6">
+                <Button asChild variant="hero" size="xl" className="w-full md:w-auto">
+                  <a href={event.externalFormUrl} target="_blank" rel="noopener noreferrer">
+                    {event.ctaText || 'Register Now'}
+                  </a>
+                </Button>
+              </div>
+            ) : event.registrationLink ? (
+              <div className="mt-6">
+                <Button asChild variant="hero" size="xl" className="w-full md:w-auto">
+                  <a href={event.registrationLink} target="_blank" rel="noopener noreferrer">
+                    {event.ctaText || 'Register Now'}
+                  </a>
+                </Button>
+              </div>
             ) : null}
-
-            <div className="mt-6">
-              <Button asChild variant="hero" size="xl" className="w-full md:w-auto">
-                <a href={event.registrationLink} target="_blank" rel="noopener noreferrer">
-                  {event.ctaText || 'Register Now'}
-                </a>
-              </Button>
-            </div>
           </div>
         </div>
       </article>

@@ -27,7 +27,10 @@ export interface EventItem {
   bannerImage: string;
   bannerImageAlt?: string;
   bannerImageRaw?: any;
-  formEmbedUrl?: string;
+  useNativeForm?: boolean;
+  externalFormUrl?: string;
+  formTemplate?: any;
+  customFields?: any[];
   gallery?: EventGalleryImage[];
   [key: string]: any;
 }
@@ -38,6 +41,7 @@ export function isEventUpcoming(eventDate: string): boolean {
 }
 
 const eventFields = `
+  _id,
   title,
   "slug": slug.current,
   eventDate,
@@ -65,7 +69,10 @@ export async function getEventBySlug(slug: string): Promise<EventItem | null> {
       ${eventFields},
       description,
       contactPerson,
-      formEmbedUrl,
+      useNativeForm,
+      externalFormUrl,
+      "formTemplate": formTemplate->,
+      customFields,
       "gallery": gallery[]{ "url": asset->url, alt }
     }`,
     { slug },
