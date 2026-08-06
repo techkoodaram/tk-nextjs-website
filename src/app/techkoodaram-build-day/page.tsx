@@ -1,4 +1,4 @@
-import Header from "@/components/Header";
+import SiteHeader from "@/components/SiteHeader";
 import Footer from "@/components/Footer";
 import type { Metadata } from "next";
 import { BuildDaySlider } from "@/components/BuildDaySlider";
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 const BuildDayPage = () => {
     return (
         <div className="min-h-screen bg-background flex flex-col">
-            <Header />
+            <SiteHeader />
             <main className="flex-grow pt-24 pb-16">
                 <article className="container mx-auto px-4 max-w-4xl">
                     <header className="mb-12">

@@ -1,7 +1,7 @@
 import SiteHeader from "@/components/SiteHeader";
 import Footer from "@/components/Footer";
 
-export default function BlogLayout({
+export default function EventsLayout({
     children,
 }: {
     children: React.ReactNode;

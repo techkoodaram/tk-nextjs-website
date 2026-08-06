@@ -6,9 +6,14 @@ import { Button } from "@/components/ui/button";
 import { Menu, X, Github } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-// import RegistrationBanner from "./RegistrationBanner";
+import EventAnnouncementRibbon from "./EventAnnouncementRibbon";
+import type { EventItem } from "@/lib/events";
 
-const Header = () => {
+interface HeaderProps {
+  activeEvent?: EventItem | null;
+}
+
+const Header = ({ activeEvent }: HeaderProps = {}) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
   const [hash, setHash] = useState("");
@@ -22,6 +27,7 @@ const Header = () => {
 
   const navItems: { label: string; href: string }[] = [
     { label: "Build Day", href: "/techkoodaram-build-day" },
+    { label: "Events", href: "/events" },
     { label: "Blog", href: "/blog" },
     { label: "Community", href: "/#community" },
     // { label: "About", href: "/#about" },
@@ -37,6 +43,7 @@ const Header = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
+      {activeEvent && <EventAnnouncementRibbon event={activeEvent} />}
       <div className="container mx-auto">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
@@ -127,7 +134,6 @@ const Header = () => {
           </nav>
         )}
       </div>
-      {/* <RegistrationBanner /> */}
     </header>
   );
 };
