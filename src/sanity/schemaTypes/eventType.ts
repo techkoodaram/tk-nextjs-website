@@ -135,11 +135,71 @@ export const eventType = defineType({
       ],
     }),
     defineField({
-      name: 'formEmbedUrl',
-      title: 'Registration Form Embed URL',
-      description: 'Optional embeddable form URL (e.g. Tally.so or Google Form embed link) rendered inline on the event page.',
+      name: 'useNativeForm',
+      title: 'Enable Native Form',
+      description: 'Toggle on to use the native Sanity-backed form. Toggle off to use an external form link.',
+      type: 'boolean',
+      initialValue: true,
+    }),
+    defineField({
+      name: 'externalFormUrl',
+      title: 'External Form URL',
+      description: 'Link for Google Forms or external registration links (used when Native Form is disabled).',
       type: 'url',
+      hidden: ({ document }) => document?.useNativeForm === true,
       validation: (rule) => rule.uri({ scheme: ['http', 'https'] }),
+    }),
+    defineField({
+      name: 'formTemplate',
+      title: 'Form Template',
+      description: 'Select a reusable form template for this event.',
+      type: 'reference',
+      to: [{ type: 'eventForm' }],
+      hidden: ({ document }) => document?.useNativeForm !== true,
+    }),
+    defineField({
+      name: 'customFields',
+      title: 'Custom Event Fields',
+      description: 'Additional fields specific to this event (appended to the template fields).',
+      type: 'array',
+      hidden: ({ document }) => document?.useNativeForm !== true,
+      of: [
+        {
+          type: 'object',
+          fields: [
+            defineField({ name: 'fieldName', title: 'Field Name (Key)', type: 'string', validation: (rule) => rule.required() }),
+            defineField({ name: 'label', title: 'Label', type: 'string', validation: (rule) => rule.required() }),
+            defineField({
+              name: 'fieldType',
+              title: 'Field Type',
+              type: 'string',
+              options: {
+                list: [
+                  { title: 'Text (Short)', value: 'text' },
+                  { title: 'Text (Long/Textarea)', value: 'textarea' },
+                  { title: 'Email', value: 'email' },
+                  { title: 'Phone/Tel', value: 'tel' },
+                  { title: 'URL', value: 'url' },
+                  { title: 'Select/Dropdown', value: 'select' },
+                  { title: 'Checkbox', value: 'checkbox' },
+                ],
+              },
+              validation: (rule) => rule.required(),
+            }),
+            defineField({ name: 'isRequired', title: 'Is Required?', type: 'boolean', initialValue: true }),
+            defineField({
+              name: 'options',
+              title: 'Options',
+              type: 'array',
+              of: [{ type: 'string' }],
+              hidden: ({ parent }) => parent?.fieldType !== 'select',
+            }),
+          ],
+          preview: {
+            select: { title: 'label', subtitle: 'fieldName' },
+          }
+        }
+      ]
     }),
   ],
   orderings: [
