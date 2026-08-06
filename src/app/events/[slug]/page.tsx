@@ -231,6 +231,9 @@ export default async function EventPage({ params }: PageProps) {
                   fields={[...(event.formTemplate?.fields || []), ...(event.customFields || [])]}
                   title={event.formTemplate?.title}
                   description={event.formTemplate?.description}
+                  eventName={event.title}
+                  eventDate={eventDateLabel}
+                  eventVenue={event.venue}
                 />
               </div>
             ) : event.externalFormUrl ? (

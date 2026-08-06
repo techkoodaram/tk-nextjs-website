@@ -1,7 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
+import { useDropzone } from 'react-dropzone';
+import { Camera } from 'lucide-react';
+import RegistrationBanner from './RegistrationBanner';
 
 interface FormField {
   fieldName: string;
@@ -16,6 +19,56 @@ interface EventRegistrationFormProps {
   fields: FormField[];
   title?: string;
   description?: string;
+  eventName: string;
+  eventDate: string;
+  eventVenue: string;
+}
+
+function PhotoUploadField({
+  onChange,
+  value,
+}: {
+  onChange: (value: string) => void;
+  value: string | undefined;
+}) {
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    const file = acceptedFiles[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        onChange(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  }, [onChange]);
+
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    accept: { 'image/*': ['.jpeg', '.jpg', '.png', '.webp'] },
+    maxFiles: 1,
+  });
+
+  return (
+    <div
+      {...getRootProps()}
+      className="border-2 border-dashed border-input rounded-xl p-4 text-center cursor-pointer hover:border-primary hover:bg-muted/50 transition-all"
+    >
+      <input {...getInputProps()} />
+      {value ? (
+        <div className="relative">
+          <img src={value} alt="Preview" className="max-h-24 mx-auto rounded-lg shadow-sm" />
+          <p className="mt-2 text-xs text-muted-foreground">Click to change</p>
+        </div>
+      ) : (
+        <div className="py-2">
+          <div className="w-10 h-10 mx-auto mb-2 rounded-full bg-primary/10 flex items-center justify-center">
+            <Camera className="w-5 h-5 text-primary" />
+          </div>
+          <p className="text-muted-foreground text-sm font-medium">Upload Photo</p>
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default function EventRegistrationForm({
@@ -23,8 +76,12 @@ export default function EventRegistrationForm({
   fields,
   title,
   description,
+  eventName,
+  eventDate,
+  eventVenue,
 }: EventRegistrationFormProps) {
   const [formData, setFormData] = useState<Record<string, string>>({});
+  const [localPhoto, setLocalPhoto] = useState<string | undefined>();
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
@@ -37,7 +94,7 @@ export default function EventRegistrationForm({
     e.preventDefault();
     setLoading(true);
     setError('');
-
+    
     try {
       const response = await fetch('/api/register-event', {
         method: 'POST',
@@ -63,11 +120,21 @@ export default function EventRegistrationForm({
   };
 
   if (success) {
+    const nameFieldKey = Object.keys(formData).find(k => k.toLowerCase().includes('name') && !k.toLowerCase().includes('employer'));
+    const initialName = nameFieldKey ? formData[nameFieldKey] : '';
+    
+    const roleFieldKey = Object.keys(formData).find(k => k.toLowerCase().includes('position') || (k.toLowerCase().includes('role') && !k.toLowerCase().includes('employer')));
+    const initialRole = roleFieldKey ? formData[roleFieldKey] : '';
+    
     return (
-      <div className="p-8 text-center border border-border/50 rounded-lg bg-green-50/5 dark:bg-green-900/10 text-green-700 dark:text-green-400">
-        <h3 className="text-2xl font-bold mb-2">Registration Successful!</h3>
-        <p>Thank you for registering. We look forward to seeing you at the event.</p>
-      </div>
+      <RegistrationBanner
+        eventName={eventName}
+        eventDate={eventDate}
+        venue={eventVenue}
+        initialName={initialName}
+        initialRole={initialRole}
+        initialPhoto={localPhoto || null}
+      />
     );
   }
 
@@ -133,7 +200,15 @@ export default function EventRegistrationForm({
           </div>
         ))}
 
-        <Button type="submit" className="w-full mt-4" disabled={loading}>
+        <div className="space-y-2 mt-4">
+          <label className="block text-sm font-medium">Profile Photo (Optional)</label>
+          <PhotoUploadField 
+            onChange={setLocalPhoto}
+            value={localPhoto}
+          />
+        </div>
+
+        <Button type="submit" className="w-full mt-6" disabled={loading}>
           {loading ? 'Submitting...' : 'Submit Registration'}
         </Button>
       </form>
